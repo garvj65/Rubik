@@ -3,6 +3,7 @@
 import random
 import numpy as np
 from enum import Enum
+import copy
 from typing import List, Tuple, Dict, Optional, Union
 
 
@@ -52,17 +53,17 @@ class Cubie:
         # Determine which faces this cubie has and assign colors
         if x == 0:
             self.colors[Face.LEFT] = Color.ORANGE
-        elif x == max_idx:
+        if x == max_idx:
             self.colors[Face.RIGHT] = Color.RED
             
         if y == 0:
             self.colors[Face.DOWN] = Color.YELLOW
-        elif y == max_idx:
+        if y == max_idx:
             self.colors[Face.UP] = Color.WHITE
             
         if z == 0:
             self.colors[Face.BACK] = Color.BLUE
-        elif z == max_idx:
+        if z == max_idx:
             self.colors[Face.FRONT] = Color.GREEN
     
     def is_corner(self) -> bool:
@@ -104,6 +105,11 @@ class Cubie:
                 new_colors[face] = color
         self.colors = new_colors
 
+    def copy(self) -> 'Cubie':
+        """Create a deep copy of the cubie."""
+        new_cubie = Cubie(self.position, self.size)
+        new_cubie.colors = self.colors.copy()
+        return new_cubie
 
 class Cube:
     """Represents a Rubik's Cube of any size (NxNxN)."""
@@ -183,13 +189,23 @@ class Cube:
     
     def is_solved(self) -> bool:
         """Check if the cube is solved (all faces have a single color)."""
+        # Define the correct color for each face in a solved state
+        solved_face_colors = {
+            Face.UP: Color.WHITE,
+            Face.DOWN: Color.YELLOW,
+            Face.LEFT: Color.ORANGE,
+            Face.RIGHT: Color.RED,
+            Face.FRONT: Color.GREEN,
+            Face.BACK: Color.BLUE,
+        }
+
         for face in Face:
+            target_color = solved_face_colors[face]
             colors = self.get_face_colors(face)
-            first_color = colors[0][0]
             
             for row in colors:
                 for color in row:
-                    if color != first_color:
+                    if color != target_color:
                         return False
         
         return True
@@ -256,15 +272,14 @@ class Cube:
     
     def copy(self) -> 'Cube':
         """Create a deep copy of the cube."""
-        new_cube = Cube(self.size)
-        
-        # Copy the cubies
+        new_cube = self.__class__.__new__(self.__class__)
+        new_cube.size = self.size
+        new_cube.cubies = {}
         for position, cubie in self.cubies.items():
-            new_cube.cubies[position] = Cubie(position, self.size)
-            for face, color in cubie.colors.items():
-                new_cube.cubies[position].colors[face] = color
-        
-        # Copy the move history
+            new_cubie = cubie.__class__.__new__(cubie.__class__)
+            new_cubie.position = cubie.position
+            new_cubie.size = cubie.size
+            new_cubie.colors = cubie.colors.copy()
+            new_cube.cubies[position] = new_cubie
         new_cube.move_history = self.move_history.copy()
-        
         return new_cube

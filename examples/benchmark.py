@@ -11,9 +11,7 @@ import numpy as np
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cube.model import Cube
-from solvers.layer_by_layer import LayerByLayerSolver
 from solvers.kociemba import KociembaSolver
-from ml.predictor import RandomPredictor, HeuristicPredictor
 
 
 def benchmark_solvers(cube_size=3, num_scrambles=10, scramble_lengths=[5, 10, 15, 20]):
@@ -30,7 +28,6 @@ def benchmark_solvers(cube_size=3, num_scrambles=10, scramble_lengths=[5, 10, 15
     """
     # Create the solvers to benchmark
     solvers = {
-        "Layer by Layer": lambda cube: LayerByLayerSolver(cube),
         "Kociemba": lambda cube: KociembaSolver(cube),
     }
     
@@ -137,102 +134,6 @@ def plot_benchmark_results(results, scramble_lengths):
     plt.show()
 
 
-def benchmark_predictors(cube_size=3, num_scrambles=10, scramble_length=10, num_predictions=5):
-    """Benchmark different predictors on scrambled cubes.
-    
-    Args:
-        cube_size: The size of the cube to benchmark.
-        num_scrambles: The number of scrambles to test.
-        scramble_length: The length of scrambles to test.
-        num_predictions: The number of moves to predict.
-        
-    Returns:
-        A dictionary of results, where the keys are predictor names and the values are
-        dictionaries with keys 'prediction_times' and 'prediction_qualities'.
-    """
-    # Create the predictors to benchmark
-    predictors = {
-        "Random": RandomPredictor(),
-        "Heuristic": HeuristicPredictor(lookahead=1),
-    }
-    
-    # Initialize the results dictionary
-    results = {}
-    for predictor_name in predictors:
-        results[predictor_name] = {
-            "prediction_times": [],
-            "prediction_qualities": [],
-        }
-    
-    # Benchmark each predictor on multiple scrambles
-    for i in range(num_scrambles):
-        # Create a cube
-        cube = Cube(cube_size)
-        
-        # Scramble the cube
-        scramble_moves = cube.scramble(scramble_length)
-        
-        # Test each predictor
-        for predictor_name, predictor in predictors.items():
-            # Make a copy of the cube for this predictor
-            cube_copy = cube.copy()
-            
-            # Predict moves and measure the time
-            start_time = time.time()
-            predicted_moves = predictor.predict_moves(cube_copy, num_predictions)
-            end_time = time.time()
-            
-            # Record the results
-            prediction_time = end_time - start_time
-            
-            # Apply the predicted moves and evaluate the quality
-            for move in predicted_moves:
-                cube_copy.apply_move(move)
-            
-            # For demonstration purposes, we'll just use a random quality metric
-            # In a real implementation, this would evaluate how good the prediction is
-            prediction_quality = random.random()
-            
-            # Add the results to the dictionary
-            results[predictor_name]["prediction_times"].append(prediction_time)
-            results[predictor_name]["prediction_qualities"].append(prediction_quality)
-    
-    return results
-
-
-def plot_predictor_results(results):
-    """Plot the predictor benchmark results.
-    
-    Args:
-        results: The benchmark results, as returned by benchmark_predictors.
-    """
-    # Create a figure with two subplots
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
-    
-    # Plot the average prediction times
-    predictor_names = list(results.keys())
-    avg_times = [np.mean(results[name]["prediction_times"]) for name in predictor_names]
-    
-    ax1.bar(predictor_names, avg_times)
-    ax1.set_xlabel("Predictor")
-    ax1.set_ylabel("Average Prediction Time (s)")
-    ax1.set_title("Average Prediction Time by Predictor")
-    ax1.grid(True)
-    
-    # Plot the average prediction qualities
-    avg_qualities = [np.mean(results[name]["prediction_qualities"]) for name in predictor_names]
-    
-    ax2.bar(predictor_names, avg_qualities)
-    ax2.set_xlabel("Predictor")
-    ax2.set_ylabel("Average Prediction Quality")
-    ax2.set_title("Average Prediction Quality by Predictor")
-    ax2.grid(True)
-    
-    # Adjust the layout and show the plot
-    plt.tight_layout()
-    plt.show()
-
-
 def main():
     """Run the benchmarks."""
     # Benchmark the solvers
@@ -246,19 +147,6 @@ def main():
     # Plot the solver benchmark results
     print("Plotting solver benchmark results...")
     plot_benchmark_results(solver_results, scramble_lengths)
-    
-    # Benchmark the predictors
-    print("\nBenchmarking predictors...")
-    predictor_results = benchmark_predictors(
-        cube_size=3,
-        num_scrambles=5,  # Use a small number for demonstration
-        scramble_length=10,
-        num_predictions=5,
-    )
-    
-    # Plot the predictor benchmark results
-    print("Plotting predictor benchmark results...")
-    plot_predictor_results(predictor_results)
 
 
 if __name__ == "__main__":

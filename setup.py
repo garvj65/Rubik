@@ -14,7 +14,6 @@ setup(
     extras_require={
         "visualization": ["imageio"],
         "interactive": ["ipywidgets"],
-        "ml": ["tensorflow", "scikit-learn"],
     },
     python_requires=">=3.6",
     classifiers=[
