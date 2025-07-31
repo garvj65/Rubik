@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: rubik-solver
+Version: 0.1.0
+Summary: A scalable Rubik's Cube solver for 2x2, 3x3, and 4x4 cubes
+Author: Rubik's Cube Solver Team
+Author-email: example@example.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Provides-Extra: visualization
+Requires-Dist: imageio; extra == "visualization"
+Provides-Extra: interactive
+Requires-Dist: ipywidgets; extra == "interactive"
+Provides-Extra: ml
+Requires-Dist: tensorflow; extra == "ml"
+Requires-Dist: scikit-learn; extra == "ml"

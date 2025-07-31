@@ -1,0 +1,13 @@
+# Core dependencies
+numpy>=1.19.0
+matplotlib>=3.3.0
+
+# Visualization dependencies
+imageio>=2.9.0
+
+# Interactive visualization dependencies
+ipywidgets>=7.6.0
+
+# Machine learning dependencies (optional)
+# tensorflow>=2.4.0
+# scikit-learn>=0.24.0

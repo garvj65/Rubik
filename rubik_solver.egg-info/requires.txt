@@ -1,0 +1,12 @@
+numpy
+matplotlib
+
+[interactive]
+ipywidgets
+
+[ml]
+tensorflow
+scikit-learn
+
+[visualization]
+imageio
