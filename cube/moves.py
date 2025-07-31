@@ -231,20 +231,15 @@ def apply_face_rotation(cube: Cube, face: Face, layer: int = 0,
         temp_cubies[pos] = cube.cubies[pos]
     
     # Move cubies to their new positions and rotate their colors
+    new_cubies = {}
     for old_pos, new_pos in position_map.items():
-        # Get the cubie that was at the old position
         cubie = temp_cubies[old_pos]
-        
-        # Create a new cubie at the new position
-        new_cubie = Cubie(new_pos, cube.size)
-        
-        # Copy colors with rotation
-        for f, color in cubie.colors.items():
-            new_face = rotation_map.get(f, f)
-            new_cubie.colors[new_face] = color
-        
-        # Update the cube
-        cube.cubies[new_pos] = new_cubie
+        cubie.position = new_pos
+        cubie.rotate(rotation_map)
+        new_cubies[new_pos] = cubie
+
+    for pos, cubie in new_cubies.items():
+        cube.cubies[pos] = cubie
 
 
 def parse_move(move: str) -> Tuple[str, int, bool, bool]:

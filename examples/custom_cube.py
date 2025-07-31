@@ -9,7 +9,7 @@ import numpy as np
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cube.model import Cube, Face, Color, Cubie
-from cube.visualization import visualize_cube
+from visualization.renderer import render_cube_3d
 
 
 class MirrorCube(Cube):
@@ -50,7 +50,7 @@ class MirrorCube(Cube):
         # In a real implementation, this would visualize the mirror cube
         # with different shapes for the cubies
         # For demonstration purposes, we'll just use the standard visualization
-        return visualize_cube(self, ax=ax, show=show)
+        return render_cube_3d(self, ax=ax, show=show)
 
 
 class GearCube(Cube):
@@ -117,7 +117,7 @@ class GearCube(Cube):
         # In a real implementation, this would visualize the gear cube
         # with the rotations of the cubies
         # For demonstration purposes, we'll just use the standard visualization
-        return visualize_cube(self, ax=ax, show=show)
+        return render_cube_3d(self, ax=ax, show=show)
 
 
 class PyraminxCube:

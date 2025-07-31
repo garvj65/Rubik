@@ -2,7 +2,7 @@
 
 This project implements a scalable algorithm for solving Rubik's Cubes of various sizes (2x2, 3x3, and 4x4), with a focus on NxN scalability. The implementation balances time and space complexity while providing an intuitive solution inspired by human problem-solving approaches.
 
-The library provides comprehensive tools for simulating, visualizing, and solving Rubik's Cubes with support for different solving algorithms, 3D visualization, and machine learning integration.
+The library provides comprehensive tools for simulating, visualizing, and solving Rubik's Cubes with support for different solving algorithms and 3D visualization.
 
 ## Project Structure
 
@@ -10,12 +10,10 @@ The library provides comprehensive tools for simulating, visualizing, and solvin
   - `__init__.py` - Package initialization
   - `model.py` - Data structures for cube representation
   - `moves.py` - Move engine supporting various turns and rotations
-  - `visualization.py` - Visual representation of the cube
 
 - `solvers/` - Implementation of solving algorithms
   - `__init__.py` - Package initialization
   - `base_solver.py` - Base solver interface
-  - `layer_by_layer.py` - Layer-by-layer solving approach
   - `kociemba.py` - Two-phase algorithm implementation
   - `reduction.py` - 4x4 reduction method
   - `supercube.py` - Solver for supercubes (where center orientation matters)
@@ -24,22 +22,17 @@ The library provides comprehensive tools for simulating, visualizing, and solvin
   - `__init__.py` - Package initialization
   - `renderer.py` - 3D cube renderer
 
-- `ml/` - Machine learning integration
-  - `__init__.py` - Package initialization
-  - `predictor.py` - ML model for predicting optimal moves
-
 - `examples/` - Example usage and demonstrations
   - `__init__.py` - Package initialization
   - `demo.py` - Main demonstration
   - `custom_solver.py` - Custom solver example
-  - `custom_visualization.py` - Custom visualization
-  - `custom_predictor.py` - Custom ML predictor
   - `custom_cube.py` - Custom cube variants
   - `custom_algorithm.py` - Custom algorithm steps
   - `benchmark.py` - Performance benchmarking
   - `custom_heuristic.py` - Custom heuristics
   - `ida_star_solver.py` - IDA* implementation
   - `thistlethwaite_solver.py` - Thistlethwaite algorithm
+  - `realtime_3d_solver.py` - Real-time 3D solver with interactive visualization
 
 - `tests/` - Unit tests
   - `__init__.py` - Package initialization
@@ -55,23 +48,16 @@ The library provides comprehensive tools for simulating, visualizing, and solvin
 - **Efficient Data Structures**: Layered cubie matrix and cubie objects for optimal representation
 - **Comprehensive Move Engine**: Support for various turns and rotations
 - **Multiple Solving Algorithms**:
-  - Layer-by-Layer (beginner method)
   - Kociemba's Two-Phase Algorithm
   - Reduction Method (for 4x4)
   - Thistlethwaite's Algorithm
   - IDA* with pattern databases
 - **Visualization**:
-  - 2D cube representation
   - 3D rendering with matplotlib
   - Animation of move sequences
   - Interactive 3D visualization with ipywidgets
 - **Supercube Support**: Handles supercubes where center orientation matters
-- **Machine Learning Integration**:
-  - Random move predictor
-  - Heuristic-based predictor
-  - Deep learning predictor (placeholder)
-  - Reinforcement learning predictor (placeholder)
-- **Benchmarking Tools**: Compare performance of different solving algorithms and predictors
+- **Benchmarking Tools**: Compare performance of different solving algorithms
 
 ## Installation
 
@@ -90,13 +76,32 @@ Or install directly using pip:
 pip install -r requirements.txt
 ```
 
+## How to Run
+
+The main entry point for the interactive 3D solver is `examples/realtime_3d_solver.py`.
+
+To run the interactive solver:
+
+```bash
+python examples/realtime_3d_solver.py
+```
+
+This will open a window with a 3D representation of the cube. You can interact with the solver using the command line.
+
+The script also supports an automatic demo mode:
+
+```bash
+python examples/realtime_3d_solver.py
+```
+Then choose option 2.
+
 ## Usage Examples
 
 ### Basic Cube Operations
 
 ```python
 from cube.model import Cube
-from cube.visualization import visualize_cube
+from visualization.renderer import render_cube_3d
 
 # Create a 3x3 cube
 cube = Cube(3)
@@ -107,7 +112,7 @@ cube.apply_move("U")
 cube.apply_move("R'")
 
 # Visualize the cube
-visualize_cube(cube)
+render_cube_3d(cube)
 
 # Check if the cube is solved
 print(f"Cube is solved: {cube.is_solved()}")
@@ -121,14 +126,14 @@ print(f"Scrambled with moves: {scramble_moves}")
 
 ```python
 from cube.model import Cube
-from solvers.layer_by_layer import LayerByLayerSolver
+from solvers.kociemba import KociembaSolver
 
 # Create and scramble a cube
 cube = Cube(3)
 cube.scramble(20)
 
 # Solve the cube
-solver = LayerByLayerSolver(cube)
+solver = KociembaSolver(cube)
 solution = solver.solve()
 
 # Apply the solution
@@ -158,32 +163,11 @@ moves = ["R", "U", "R'", "U'", "R'", "F", "R", "F'"]
 animate_cube_3d(cube, moves)
 ```
 
-### Using Machine Learning Predictors
-
-```python
-from cube.model import Cube
-from ml.predictor import HeuristicPredictor
-
-# Create and scramble a cube
-cube = Cube(3)
-cube.scramble(5)
-
-# Create a predictor
-predictor = HeuristicPredictor()
-
-# Get the next best move
-best_move = predictor.predict_move(cube)
-print(f"Best move: {best_move}")
-
-# Apply the move
-cube.apply_move(best_move)
-```
-
 ## Implementation Details
 
 The core of the implementation is a flexible cube representation that scales to different cube sizes. The solver algorithms are designed to work with this representation, with optimizations for specific cube sizes where appropriate.
 
-The project includes multiple solving approaches, from beginner-friendly layer-by-layer methods to more advanced algorithms like Kociemba's two-phase algorithm, Thistlethwaite's algorithm, and IDA* with pattern databases.
+The project includes multiple solving approaches, from advanced algorithms like Kociemba's two-phase algorithm, Thistlethwaite's algorithm, and IDA* with pattern databases.
 
 ## Extending the Library
 
@@ -191,20 +175,10 @@ The project includes multiple solving approaches, from beginner-friendly layer-b
 
 See `examples/custom_solver.py` for a template on how to create your own solver by extending the `BaseSolver` class.
 
-### Creating Custom Visualizations
-
-See `examples/custom_visualization.py` for examples of creating custom visualization methods.
-
-### Implementing Custom Predictors
-
-See `examples/custom_predictor.py` for examples of implementing custom move prediction algorithms.
-
 ## Future Work
 
 - Implement more advanced solving algorithms
 - Optimize for larger cube sizes (5x5 and beyond)
-- Enhance the machine learning models for better move prediction
-- Add support for additional cube types and puzzles
 - Improve 3D visualization with more interactive features
 - Develop a web interface for the solver
 

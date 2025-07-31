@@ -9,7 +9,7 @@ import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cube.model import Cube, Face, Color
-from cube.visualization import visualize_cube
+from visualization.renderer import render_cube_3d
 from solvers.base_solver import BaseSolver
 
 
@@ -289,7 +289,7 @@ def main():
     print(f"Scrambled the cube with moves: {scramble_moves}")
     
     # Visualize the scrambled cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Create a heuristic solver
     heuristic_solver = HeuristicSolver(cube, max_depth=10)
@@ -310,7 +310,7 @@ def main():
     print(f"\nCube is solved: {is_solved}")
     
     # Visualize the solved cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Create a pattern database solver
     pattern_db_solver = PatternDatabaseSolver(cube)
@@ -321,7 +321,7 @@ def main():
     print(f"\nScrambled the cube with moves: {scramble_moves}")
     
     # Visualize the scrambled cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Solve the cube
     print("\nSolving the cube using the pattern database solver...")
@@ -339,7 +339,7 @@ def main():
     print(f"\nCube is solved: {is_solved}")
     
     # Visualize the solved cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
 
 
 if __name__ == "__main__":

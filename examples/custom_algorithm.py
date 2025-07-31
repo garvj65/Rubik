@@ -7,7 +7,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cube.model import Cube
-from cube.visualization import visualize_cube, visualize_move_sequence
+from visualization.renderer import render_cube_3d, animate_cube_3d
 
 
 def solve_cross(cube):
@@ -370,7 +370,7 @@ def main():
     print(f"Scrambled the cube with moves: {scramble_moves}")
     
     # Visualize the scrambled cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Solve the cross
     print("\nSolving the cross...")
@@ -382,7 +382,7 @@ def main():
         cube.apply_move(move)
     
     # Visualize the cube after solving the cross
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Solve the first layer corners
     print("\nSolving the first layer corners...")
@@ -394,7 +394,7 @@ def main():
         cube.apply_move(move)
     
     # Visualize the cube after solving the first layer corners
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Solve the second layer edges
     print("\nSolving the second layer edges...")
@@ -406,7 +406,7 @@ def main():
         cube.apply_move(move)
     
     # Visualize the cube after solving the second layer edges
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Solve the last layer cross
     print("\nSolving the last layer cross...")
@@ -418,7 +418,7 @@ def main():
         cube.apply_move(move)
     
     # Visualize the cube after solving the last layer cross
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Solve the last layer corners
     print("\nSolving the last layer corners...")
@@ -430,7 +430,7 @@ def main():
         cube.apply_move(move)
     
     # Visualize the cube after solving the last layer corners
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Solve the last layer edges
     print("\nSolving the last layer edges...")
@@ -442,7 +442,7 @@ def main():
         cube.apply_move(move)
     
     # Visualize the cube after solving the last layer edges
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Check if the cube is solved
     print(f"\nCube is solved: {cube.is_solved()}")

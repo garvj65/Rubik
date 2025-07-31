@@ -8,7 +8,7 @@ to be correctly oriented in addition to being in the right position.
 from typing import List, Dict, Tuple, Optional, Set
 from cube.model import Cube, Face, Color
 from solvers.base_solver import BaseSolver
-from solvers.layer_by_layer import LayerByLayerSolver
+from solvers.kociemba import KociembaSolver
 
 
 class SupercubeSolver(BaseSolver):
@@ -103,8 +103,8 @@ class SupercubeSolver(BaseSolver):
         # Create a copy of the cube for the standard solver
         cube_copy = self.cube.copy()
         
-        # Use a standard layer-by-layer solver
-        solver = LayerByLayerSolver(cube_copy)
+        # Use a standard Kociemba solver
+        solver = KociembaSolver(cube_copy)
         moves = solver.solve()
         
         # Apply the moves to our cube

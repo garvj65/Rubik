@@ -10,7 +10,6 @@ from typing import List, Optional
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cube.model import Cube
-from solvers.layer_by_layer import LayerByLayerSolver
 from solvers.kociemba import KociembaSolver
 from visualization.renderer import render_cube_3d
 import matplotlib.pyplot as plt
@@ -28,8 +27,7 @@ class RealTime3DSolver:
             cube_size: Size of the cube (default 3x3x3)
         """
         self.cube = Cube(cube_size)
-        self.solver = LayerByLayerSolver()
-        self.kociemba_solver = KociembaSolver()
+        self.solver = KociembaSolver()
         self.solution_moves = []
         self.current_move_index = 0
         self.is_solving = False
@@ -53,25 +51,19 @@ class RealTime3DSolver:
         print(f"Scrambled cube with moves: {' '.join(scramble_moves)}")
         return scramble_moves
     
-    def solve_cube(self, algorithm: str = "layer_by_layer") -> List[str]:
+    def solve_cube(self) -> List[str]:
         """Solve the cube and return the solution moves.
         
-        Args:
-            algorithm: Solving algorithm to use ('layer_by_layer' or 'kociemba')
-            
         Returns:
             List of moves to solve the cube
         """
-        print(f"Solving cube using {algorithm} algorithm...")
+        print(f"Solving cube using Kociemba algorithm...")
         
-        if algorithm == "kociemba":
-            try:
-                solution = self.kociemba_solver.solve(self.cube)
-            except Exception as e:
-                print(f"Kociemba solver failed: {e}. Falling back to layer-by-layer.")
-                solution = self.solver.solve(self.cube)
-        else:
+        try:
             solution = self.solver.solve(self.cube)
+        except Exception as e:
+            print(f"Kociemba solver failed: {e}")
+            solution = []
         
         if solution:
             print(f"Solution found: {' '.join(solution)} ({len(solution)} moves)")
@@ -186,8 +178,7 @@ class RealTime3DSolver:
         print("=== Real-time 3D Rubik's Cube Solver ===")
         print("Commands:")
         print("  's' - Scramble cube")
-        print("  'solve' - Solve with layer-by-layer")
-        print("  'kociemba' - Solve with Kociemba algorithm")
+        print("  'solve' - Solve with Kociemba algorithm")
         print("  'animate' - Animate current solution")
         print("  'reset' - Reset cube to solved state")
         print("  'show' - Show current 3D visualization")
@@ -206,9 +197,7 @@ class RealTime3DSolver:
                 self.scramble_cube()
                 self.render_current_state()
             elif command == 'solve':
-                self.solve_cube("layer_by_layer")
-            elif command == 'kociemba':
-                self.solve_cube("kociemba")
+                self.solve_cube()
             elif command == 'animate':
                 if self.solution_moves:
                     self.animate_solution()
@@ -243,7 +232,7 @@ class RealTime3DSolver:
         
         # Solve
         print("Finding solution...")
-        self.solve_cube("layer_by_layer")
+        self.solve_cube()
         plt.pause(1)
         
         # Animate solution

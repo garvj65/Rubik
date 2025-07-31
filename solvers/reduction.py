@@ -8,7 +8,7 @@ using 3x3 algorithms.
 from typing import List, Dict, Tuple, Optional, Set
 from cube.model import Cube, Face, Color
 from solvers.base_solver import BaseSolver
-from solvers.layer_by_layer import LayerByLayerSolver
+from solvers.kociemba import KociembaSolver
 
 
 class ReductionSolver(BaseSolver):
@@ -215,13 +215,9 @@ class ReductionSolver(BaseSolver):
         # In a real implementation, we would create a virtual 3x3 cube and solve it
         # Here we'll use a simplified approach with predefined algorithms
         
-        # Example algorithm for solving the cube as a 3x3
-        # This is just a placeholder and would not work for all cases
-        moves = [
-            "U", "R", "U'", "R'", "U'", "F'", "U", "F",  # First layer
-            "U", "R", "U'", "R'", "U'", "F'", "U", "F",  # Second layer
-            "F", "R", "U", "R'", "U'", "F'"               # Last layer
-        ]
+        # Create a 3x3 solver and solve the cube
+        solver = KociembaSolver(self.cube)
+        moves = solver.solve()
         for move in moves:
             self.add_move(move)
     

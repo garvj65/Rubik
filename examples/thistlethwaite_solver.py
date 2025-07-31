@@ -9,7 +9,7 @@ import random
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cube.model import Cube
-from cube.visualization import visualize_cube
+from visualization.renderer import render_cube_3d
 from solvers.base_solver import BaseSolver
 
 
@@ -251,7 +251,7 @@ def main():
     print(f"Scrambled the cube with moves: {scramble_moves}")
     
     # Visualize the scrambled cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Create a Thistlethwaite solver
     thistlethwaite_solver = ThistlethwaiteSolver(cube)
@@ -278,7 +278,7 @@ def main():
     print(f"\nCube is solved: {is_solved}")
     
     # Visualize the solved cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Create a Korf solver
     korf_solver = KorfSolver(cube)
@@ -289,7 +289,7 @@ def main():
     print(f"\nScrambled the cube with moves: {scramble_moves}")
     
     # Visualize the scrambled cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Solve the cube
     print("\nSolving the cube using Korf's algorithm...")
@@ -307,7 +307,7 @@ def main():
     print(f"\nCube is solved: {is_solved}")
     
     # Visualize the solved cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
 
 
 if __name__ == "__main__":

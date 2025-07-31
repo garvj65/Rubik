@@ -7,7 +7,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from cube.model import Cube
-from cube.visualization import visualize_cube, visualize_move_sequence
+from visualization.renderer import render_cube_3d, animate_cube_3d
 from solvers.base_solver import BaseSolver
 
 
@@ -123,7 +123,7 @@ def main():
     print(f"Scrambled the cube with moves: {scramble_moves}")
     
     # Visualize the scrambled cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
     
     # Create a solver
     solver = CustomSolver(cube)
@@ -146,7 +146,7 @@ def main():
     print(f"\nCube is solved: {is_solved}")
     
     # Visualize the solved cube
-    visualize_cube(cube)
+    render_cube_3d(cube)
 
 
 if __name__ == "__main__":
